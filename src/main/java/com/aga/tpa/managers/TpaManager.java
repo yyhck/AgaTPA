@@ -29,6 +29,7 @@ public class TpaManager implements Listener {
     private final Map<UUID, UUID> pendingRequests = new ConcurrentHashMap<>();
     private final Map<UUID, UUID> reverseRequests = new ConcurrentHashMap<>();
     private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> requestTimestamps = new ConcurrentHashMap<>();
     private final Set<UUID> toggles = Collections.synchronizedSet(new HashSet<>());
     private final Map<UUID, BukkitRunnable> teleportTasks = new ConcurrentHashMap<>();
 
@@ -89,6 +90,7 @@ public class TpaManager implements Listener {
         pendingRequests.put(sender.getUniqueId(), target.getUniqueId());
         reverseRequests.put(target.getUniqueId(), sender.getUniqueId());
         cooldowns.put(sender.getUniqueId(), System.currentTimeMillis() + (plugin.getConfig().getInt("settings.send-cooldown") * 1000L));
+        requestTimestamps.put(sender.getUniqueId(), System.currentTimeMillis());
 
         sendJsonRequest(target, sender);
 
@@ -115,6 +117,7 @@ public class TpaManager implements Listener {
 
         Player sender = Bukkit.getPlayer(senderUUID);
         removeRequest(senderUUID, target.getUniqueId());
+        requestTimestamps.remove(senderUUID);
 
         if (sender == null || !sender.isOnline()) {
             ChatUtils.sendMessage(target, "player-not-found");
@@ -136,6 +139,7 @@ public class TpaManager implements Listener {
 
         Player sender = Bukkit.getPlayer(senderUUID);
         removeRequest(senderUUID, target.getUniqueId());
+        requestTimestamps.remove(senderUUID);
 
         target.sendMessage(ChatUtils.format(target, plugin.getConfig().getString("messages.request-denied").replace("%player%", sender != null ? sender.getName() : "Desconhecido")));
         if (sender != null && sender.isOnline()) {
@@ -151,6 +155,7 @@ public class TpaManager implements Listener {
 
         UUID targetUUID = pendingRequests.get(sender.getUniqueId());
         removeRequest(sender.getUniqueId(), targetUUID);
+        requestTimestamps.remove(sender.getUniqueId());
         sender.sendMessage(ChatUtils.format(sender, plugin.getConfig().getString("messages.request-canceled")));
 
         Player target = Bukkit.getPlayer(targetUUID);
@@ -269,10 +274,11 @@ public class TpaManager implements Listener {
 
                 // Limpa pedidos de TPA expirados
                 pendingRequests.entrySet().removeIf(entry -> {
-                    long requestTime = cooldowns.getOrDefault(entry.getKey(), 0L) - (plugin.getConfig().getInt("settings.send-cooldown") * 1000L);
-                    boolean expired = (now - requestTime) > expirationTime;
+                    long requestTime = requestTimestamps.getOrDefault(entry.getKey(), 0L);
+                    boolean expired = (now - requestTime) > expirationTime && requestTime != 0L;
                     if (expired) {
                         reverseRequests.remove(entry.getValue());
+                        requestTimestamps.remove(entry.getKey());
                         Player sender = Bukkit.getPlayer(entry.getKey());
                         if (sender != null && sender.isOnline()) {
                             ChatUtils.sendMessage(sender, "request-expired");
@@ -292,6 +298,7 @@ public class TpaManager implements Listener {
         if (pendingRequests.containsKey(disconnectedPlayerUUID)) {
             UUID targetUUID = pendingRequests.get(disconnectedPlayerUUID);
             removeRequest(disconnectedPlayerUUID, targetUUID);
+            requestTimestamps.remove(disconnectedPlayerUUID);
         }
 
         // Se o jogador que saiu tinha um pedido RECEBIDO
@@ -299,6 +306,7 @@ public class TpaManager implements Listener {
             UUID senderUUID = reverseRequests.get(disconnectedPlayerUUID);
             removeRequest(senderUUID, disconnectedPlayerUUID);
             Player sender = Bukkit.getPlayer(senderUUID);
+            requestTimestamps.remove(senderUUID);
             if (sender != null && sender.isOnline()) {
                 sender.sendMessage(ChatUtils.format(sender, plugin.getConfig().getString("messages.request-canceled-target").replace("%player%", e.getPlayer().getName())));
             }

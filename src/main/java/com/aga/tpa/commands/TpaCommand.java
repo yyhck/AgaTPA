@@ -3,6 +3,7 @@ package com.aga.tpa.commands;
 import com.aga.tpa.AgaTPA;
 import com.aga.tpa.managers.TpaManager;
 import com.aga.tpa.utils.ChatUtils;
+import com.aga.tpa.utils.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +28,7 @@ public class TpaCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("aga.tpa.send")) {
+        if (!player.hasPermission(Permissions.TPA_SEND)) {
             return ChatUtils.sendMessage(player, "no-permission");
         }
 
@@ -48,7 +49,7 @@ public class TpaCommand implements CommandExecutor {
             return ChatUtils.sendMessage(player, "target-toggle-off");
         }
 
-        if (!player.hasPermission("aga.tpa.bypass.cooldown") && manager.isOnCooldown(player.getUniqueId())) {
+        if (!player.hasPermission(Permissions.BYPASS_COOLDOWN) && manager.isOnCooldown(player.getUniqueId())) {
             String message = plugin.getConfig().getString("messages.cooldown-wait").replace("%time%", String.valueOf(manager.getCooldownSeconds(player.getUniqueId())));
             player.sendMessage(ChatUtils.format(player, message));
             return true;
