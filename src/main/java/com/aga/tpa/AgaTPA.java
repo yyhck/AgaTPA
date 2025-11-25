@@ -1,10 +1,11 @@
 package com.aga.tpa;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.aga.tpa.commands.*;
 import com.aga.tpa.managers.TpaManager;
-import com.aga.tpa.commands.TpaCommandExecutor;
+import com.aga.tpa.utils.ChatUtils;
 
 public class AgaTPA extends JavaPlugin {
 
@@ -16,14 +17,10 @@ public class AgaTPA extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        this.tpaManager = new TpaManager(this);
+        tpaManager = new TpaManager(this);
+        getServer().getPluginManager().registerEvents(tpaManager, this);
 
-        getCommand("tpa").setExecutor(new TpaCommandExecutor(this));
-        getCommand("tpaccept").setExecutor(new TpaCommandExecutor(this));
-        getCommand("tpadeny").setExecutor(new TpaCommandExecutor(this));
-        getCommand("tpacancel").setExecutor(new TpaCommandExecutor(this));
-        getCommand("tpatoggle").setExecutor(new TpaCommandExecutor(this));
-        getCommand("agatpa").setExecutor(new TpaCommandExecutor(this));
+        registerCommands();
 
         sendConsoleLogo();
     }
@@ -33,6 +30,7 @@ public class AgaTPA extends JavaPlugin {
         if (tpaManager != null) {
             tpaManager.shutdown();
         }
+        instance = null;
     }
 
     public static AgaTPA getInstance() { return instance; }
@@ -44,14 +42,19 @@ public class AgaTPA extends JavaPlugin {
         String author = "&7      Autor: &f" + (getDescription().getAuthors().isEmpty() ? "yyHcK" : getDescription().getAuthors().get(0));
         String ver    = "&7      Versao: &f" + getDescription().getVersion();
 
-        Bukkit.getConsoleSender().sendMessage(color(border));
-        Bukkit.getConsoleSender().sendMessage(color(title));
-        Bukkit.getConsoleSender().sendMessage(color(author));
-        Bukkit.getConsoleSender().sendMessage(color(ver));
-        Bukkit.getConsoleSender().sendMessage(color(border));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.color(border));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.color(title));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.color(author));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.color(ver));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.color(border));
     }
 
-    private String color(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+    private void registerCommands() {
+        getCommand("tpa").setExecutor(new TpaCommand(this));
+        getCommand("tpaccept").setExecutor(new TpacceptCommand(this));
+        getCommand("tpadeny").setExecutor(new TpadenyCommand(this));
+        getCommand("tpacancel").setExecutor(new TpacancelCommand(this));
+        getCommand("tpatoggle").setExecutor(new TpatoggleCommand(this));
+        getCommand("agatpa").setExecutor(new AgaTpaAdminCommand(this));
     }
 }

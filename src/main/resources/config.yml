@@ -20,7 +20,9 @@ restrictions:
 
 sounds:
   enabled: true
-  sound-name: "LEVEL_UP"
+  # Nome do som a ser tocado. Use nomes modernos da API da Spigot/Paper.
+  # Exemplos: ENTITY_PLAYER_LEVELUP, ENTITY_ENDERMAN_TELEPORT, BLOCK_NOTE_BLOCK_PLING
+  sound-name: "ENTITY_PLAYER_LEVELUP"
   volume: 1.0
   pitch: 1.0
 
