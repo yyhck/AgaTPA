@@ -82,8 +82,8 @@ messages:
   request-canceled: "%prefix%&cVocê cancelou o pedido."
   request-canceled-target: "%prefix%&eO pedido de &f%player% &efoi cancelado."
 
-  toggle-on: "%prefix%&aVocê &ativou &ao recebimento de TPA."
-  toggle-off: "%prefix%&cVocê &cdesativou &co recebimento de TPA."
+  toggle-on: "%prefix%&aVocê ativou o recebimento de TPA."
+  toggle-off: "%prefix%&cVocê desativou o recebimento de TPA."
   target-toggle-off: "%prefix%&cEste jogador desativou o recebimento de TPA."
 
   teleporting: "%prefix%&7Teleportando em &e%time%s&7... Não se mova!"
