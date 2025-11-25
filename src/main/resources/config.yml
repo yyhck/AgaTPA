@@ -1,0 +1,95 @@
+# ==========================================================
+#                     AgaTPA 1.0 - Configuração
+# ==========================================================
+
+settings:
+  request-expiration: 60
+
+  # Bypass: aga.tpa.bypass.cooldown
+  send-cooldown: 15
+
+  # Bypass: aga.tpa.bypass.delay
+  teleport-delay: 3
+
+  teleport-cooldown: 10
+
+restrictions:
+  blocked-worlds:
+    - world_nether
+    - world_the_end
+
+sounds:
+  enabled: true
+  sound-name: "LEVEL_UP"
+  volume: 1.0
+  pitch: 1.0
+
+messages:
+  # DICA: Você pode usar placeholders do PlaceholderAPI aqui!
+  # Exemplo com LuckPerms: "%lp_prefix% &eAgaTPA &8» &f"
+  # Exemplo com Vault: "%vault_prefix% &eAgaTPA &8» &f"
+  prefix: "&eAgaTPA &8» &f"
+
+  # Use %prefix% no início para exibir o prefixo configurado acima.
+  no-permission: "%prefix%&cVocê não possui permissão."
+  player-only: "%prefix%&cApenas jogadores podem usar este comando."
+  player-not-found: "%prefix%&cJogador não encontrado ou offline."
+  world-blocked: "%prefix%&cO sistema de TPA está desativado neste mundo."
+  self-tpa: "%prefix%&cVocê não pode enviar TPA para si mesmo."
+  reload-success: "%prefix%&aConfigurações recarregadas com sucesso."
+  usage-tpa: "%prefix%&cUtilize: /tpa <jogador>"
+
+  help-message:
+    - ""
+    - "&a&lAgaTPA &8- &fSistema de Teleporte &7(v%version%)"
+    - ""
+    - " &e/tpa <player> &7- Envia um pedido de teleporte."
+    - " &e/tpaccept &7- Aceita um pedido pendente."
+    - " &e/tpadeny &7- Recusa um pedido pendente."
+    - " &e/tpacancel &7- Cancela um pedido enviado."
+    - " &e/tpatoggle &7- Bloqueia/Desbloqueia pedidos."
+    - " &e/agatpa reload &7- Recarrega a configuração."
+    - ""
+
+  already-pending: "%prefix%&cVocê já tem um pedido pendente para este jogador."
+  no-pending-request: "%prefix%&cVocê não possui pedidos pendentes."
+  request-expired: "%prefix%&eO pedido de teleporte expirou."
+  cooldown-wait: "%prefix%&cAguarde &f%time%s &cpara enviar outro pedido."
+
+  request-sent: "%prefix%&aPedido enviado para &f%target%&a."
+  request-sent-cancel: "&e(Clique para cancelar)"
+
+  request-received:
+    - ""
+    - " &e&lPEDIDO DE TELEPORTE"
+    - " &f%player% &7quer ir até você."
+    - ""
+    - "      {accept}  &8ou  {deny}"
+    - ""
+
+  buttons:
+    accept-text: "&a&l[ACEITAR]"
+    accept-hover: "&aClique para aceitar"
+    deny-text: "&c&l[RECUSAR]"
+    deny-hover: "&cClique para recusar"
+    cancel-text: "&c&l[CANCELAR]"
+    cancel-hover: "&cClique para cancelar o pedido"
+
+  request-accepted: "%prefix%&aVocê aceitou o pedido de &f%player%&a."
+  request-accepted-target: "%prefix%&aSeu pedido foi aceito por &f%target%&a."
+  request-denied: "%prefix%&cVocê recusou o pedido de &f%player%&c."
+  request-denied-target: "%prefix%&cSeu pedido foi recusado por &f%target%&c."
+  request-canceled: "%prefix%&cVocê cancelou o pedido."
+  request-canceled-target: "%prefix%&eO pedido de &f%player% &efoi cancelado."
+
+  toggle-on: "%prefix%&aVocê &ativou &ao recebimento de TPA."
+  toggle-off: "%prefix%&cVocê &cdesativou &co recebimento de TPA."
+  target-toggle-off: "%prefix%&cEste jogador desativou o recebimento de TPA."
+
+  teleporting: "%prefix%&7Teleportando em &e%time%s&7... Não se mova!"
+
+  # Action Bar (Suporta placeholders)
+  actionbar-success: "&aTeleportado com sucesso!"
+  actionbar-move: "&cMovimento detectado! Teleporte cancelado."
+
+  teleport-canceled-move: "%prefix%&cTeleporte cancelado pois você se moveu!"

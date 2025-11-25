@@ -1,0 +1,48 @@
+name: AgaTPA
+main: com.aga.tpa.AgaTPA
+version: 1.0.0
+author: yyHcK
+description: Sistema profissional de teleporte com segurança, JSON e SQLite.
+api-version: 1.8
+softdepend: [PlaceholderAPI]
+
+commands:
+  tpa:
+    description: Envia um pedido de teleporte.
+    usage: /tpa <jogador>
+    aliases: [tparequest]
+  tpaccept:
+    description: Aceita um pedido de teleporte.
+    usage: /tpaccept
+  tpadeny:
+    description: Recusa um pedido de teleporte.
+    usage: /tpadeny
+  tpacancel:
+    description: Cancela um pedido enviado.
+    usage: /tpacancel
+  tpatoggle:
+    description: Alterna o recebimento de pedidos.
+    usage: /tpatoggle
+  agatpa:
+    description: Comandos administrativos.
+    usage: /agatpa reload
+
+permissions:
+  aga.tpa.use:
+    default: true
+  aga.tpa.accept:
+    default: true
+  aga.tpa.deny:
+    default: true
+  aga.tpa.cancel:
+    default: true
+  aga.tpa.toggle:
+    default: true
+  aga.tpa.bypass.cooldown:
+    description: Ignora o tempo de espera entre envios de TPA.
+    default: op
+  aga.tpa.bypass.delay:
+    description: Teleporte instantâneo e sem cancelamento por movimento.
+    default: op
+  aga.tpa.admin:
+    default: op
